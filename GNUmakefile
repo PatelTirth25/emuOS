@@ -55,6 +55,9 @@ run-x86_64: ovmf/ovmf-code-$(KARCH).fd ovmf/ovmf-vars-$(KARCH).fd $(IMAGE_NAME).
 		-drive if=pflash,unit=1,format=raw,file=ovmf/ovmf-vars-$(KARCH).fd \
 		-cdrom $(IMAGE_NAME).iso \
 		-device isa-debug-exit,iobase=0xf4,iosize=0x04 \
+		-vga none \
+		-device virtio-vga \
+		-display gtk,gl=on \
 		-serial stdio \
 		-no-reboot \
 		$(QEMUFLAGS)
@@ -67,6 +70,9 @@ run-hdd-x86_64: ovmf/ovmf-code-$(KARCH).fd ovmf/ovmf-vars-$(KARCH).fd $(IMAGE_NA
 		-drive if=pflash,unit=1,format=raw,file=ovmf/ovmf-vars-$(KARCH).fd \
 		-hda $(IMAGE_NAME).hdd \
 		-device isa-debug-exit,iobase=0xf4,iosize=0x04 \
+		-vga none \
+		-device virtio-vga \
+		-display gtk,gl=on \
 		-serial stdio \
 		-no-reboot \
 		$(QEMUFLAGS)

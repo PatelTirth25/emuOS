@@ -3,15 +3,39 @@
 
 mod boot;
 mod framebuffer;
-mod serial;
+pub mod serial;
 
+use framebuffer::writer::WRITER;
 use x86_64::instructions::hlt;
 
 fn main() -> ! {
-    serial_println!("emuOS!");
+    println!("emuOS!");
 
-    // let boot_info = boot_info();
-    // let framebuffer = &boot_info.framebuffer;
+    let fb = &boot::boot_info().framebuffer;
+    println!("{}x{}", fb.width(), fb.height());
+    println!("{}B", fb.pitch());
+    println!("{}B", fb.bpp() / 8);
+
+    for _ in 0..60 {
+        print!("Hello, world!");
+    }
+
+    let mut buf = WRITER.lock();
+    buf.change_color(0xFF00FF00);
+    drop(buf);
+
+    for _ in 0..60 {
+        print!("Hello, Tirth!");
+    }
+
+    let mut buf = WRITER.lock();
+    buf.change_color(0xFF0000FF);
+    drop(buf);
+
+    for _ in 0..60 {
+        print!("emuOS");
+    }
+
     // let width = framebuffer.width();
     // let height = framebuffer.height();
 
