@@ -3,7 +3,7 @@ use limine::BaseRevision;
 use limine::request::{FramebufferRequest, RequestsEndMarker, RequestsStartMarker};
 use spin::Once;
 
-use crate::main;
+use crate::{gdt, interrupt, main};
 
 /// Sets the base revision to the latest revision supported by the crate.
 /// See specification for further info.
@@ -65,7 +65,20 @@ unsafe extern "C" fn kmain() -> ! {
 
     let boot_info = BootInfo { framebuffer };
     BOOT_INFO.call_once(|| boot_info);
+    init();
 
     main()
 
+}
+
+pub fn init() {
+    gdt::init();
+    interrupt::init_idt();
+
+    unsafe {
+        let mut pics = interrupt::PICS.lock();
+        pics.initialize();
+        pics.write_masks(0, 0);
+    }
+    x86_64::instructions::interrupts::enable();
 }

@@ -1,8 +1,11 @@
 #![no_std]
 #![no_main]
+#![feature(abi_x86_interrupt)]
 
 mod boot;
 mod framebuffer;
+pub mod gdt;
+pub mod interrupt;
 pub mod serial;
 
 use framebuffer::writer::WRITER;
@@ -33,31 +36,8 @@ fn main() -> ! {
     drop(buf);
 
     for _ in 0..60 {
-        println!("emuOS");
+        println!("EMUOS");
     }
-
-    // let width = framebuffer.width();
-    // let height = framebuffer.height();
-
-    // for i in 0..height {
-    //     for j in 0..width {
-    //         let color: u32 = if (i == 0 || i == height - 1) || (j == 0 || j == width - 1) {
-    //             0xFFFF0000
-    //         } else {
-    //             0xFFFFFFFF
-    //         };
-    //
-    //         let pixel_offset = i * framebuffer.pitch() + j * 4;
-    //
-    //         unsafe {
-    //             framebuffer
-    //                 .addr()
-    //                 .add(pixel_offset as usize)
-    //                 .cast::<u32>()
-    //                 .write(color)
-    //         };
-    //     }
-    // }
 
     loop {
         hlt();
