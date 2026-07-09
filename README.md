@@ -1,4 +1,4 @@
-# Rust OS Kernel (WIP)
+# Rust OS Kernel
 
 A basic hobby OS / kernel written in **Rust**, using the **Limine** bootloader.
 
